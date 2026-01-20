@@ -1,6 +1,6 @@
 # Title: Smart Study Planner 
 
-## Author: Thanni Obafunsho (thannio@myumanitoba.ca)
+## Author: Thanni Obafunsho (funshothanni@gmail.com)
 
 ## Date: Winter 2026
 
