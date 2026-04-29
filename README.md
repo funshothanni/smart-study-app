@@ -22,7 +22,8 @@ classDiagram
         FINAL,
         LAB,
         PROJECT,
-        ACTIVITIES
+        ACTIVITIES,
+        OTHER
     }
     
     class Assessment {
@@ -74,6 +75,8 @@ classDiagram
     "
     
     class Profile {
+        %% name cannot be null nor blank
+        - String name
         %% maxDailyStudyMinutes must always be >= 0
         -int maxDailyStudyMinutes
         %% minutesAvailablePerDay cannot be null

@@ -15,6 +15,7 @@
     </properties>
 
     <dependencies>
+
         <!-- We're using Guava for Preconditions. -->
         <!-- Guava -->
         <dependency>
@@ -22,6 +23,27 @@
             <artifactId>guava</artifactId>
             <version>33.5.0-jre</version>
         </dependency>
-    </dependencies>
 
+        <!-- Javalin for simple web app UI -->
+        <dependency>
+            <groupId>io.javalin</groupId>
+            <artifactId>javalin</artifactId>
+            <version>6.7.0</version>
+        </dependency>
+
+        <!-- Logger for Javalin -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>2.0.17</version>
+        </dependency>
+
+        <!-- SQLite database -->
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.50.3.0</version>
+        </dependency>
+
+    </dependencies>
 </project>

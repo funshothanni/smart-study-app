@@ -69,7 +69,7 @@ public class Profile {
 
     public void setAvailableMinutes(DayOfWeek day, int minutesAvailable) throws InvalidAvailableMinutesException {
         Preconditions.checkNotNull(day, "Day of Week cannot be null.");
-        if(minutesAvailable <= 0) {
+        if(minutesAvailable < 0) {
             throw new InvalidAvailableMinutesException();
         }
         if(minutesAvailable > maxDailyStudyMinutes) {

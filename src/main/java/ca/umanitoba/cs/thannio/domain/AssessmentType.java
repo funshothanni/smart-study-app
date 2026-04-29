@@ -7,5 +7,6 @@ public enum AssessmentType {
     FINAL,
     LAB,
     PROJECT,
-    ACTIVITIES
+    ACTIVITIES,
+    OTHER
 }
