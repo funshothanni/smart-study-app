@@ -96,4 +96,10 @@ public class AppDatabase {
         allProfiles.put(profile.getProfileId(), profile);
         checkAppDatabase();
     }
+
+    public void clearCoursesAndAssessments() {
+        allCourses.clear();
+        allAssessments.clear();
+        checkAppDatabase();
+    }
 }
