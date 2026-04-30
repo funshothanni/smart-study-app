@@ -1,8 +1,8 @@
 package ca.umanitoba.cs.thannio.controller;
 
-import ca.umanitoba.cs.thannio.domain.AssessmentType;
-import ca.umanitoba.cs.thannio.domain.SmartStudyModel;
-import ca.umanitoba.cs.thannio.view.SmartStudyView;
+import ca.umanitoba.cs.thannio.model.AssessmentType;
+import ca.umanitoba.cs.thannio.model.SmartStudyModel;
+import ca.umanitoba.cs.thannio.view.*;
 import io.javalin.Javalin;
 
 import java.time.LocalDateTime;
@@ -29,7 +29,7 @@ public class SmartStudyController {
         });
 
         app.get("/login", ctx -> {
-            ctx.html(SmartStudyView.renderLoginPage());
+            ctx.html(LoginView.render());
         });
 
         app.post("/login", ctx -> {
@@ -41,12 +41,12 @@ public class SmartStudyController {
 
                 ctx.redirect("/dashboard");
             } catch (Exception e) {
-                ctx.html(SmartStudyView.renderError("Login failed", e.getMessage()));
+                ctx.html(ErrorView.render("Login failed", e.getMessage()));
             }
         });
 
         app.get("/register", ctx -> {
-            ctx.html(SmartStudyView.renderRegisterPage());
+            ctx.html(RegisterView.render());
         });
 
         app.post("/register", ctx -> {
@@ -57,9 +57,9 @@ public class SmartStudyController {
 
                 int profileId = model.registerProfile(name, pin, maxDailyStudyMinutes);
 
-                ctx.html(SmartStudyView.renderAccountCreatedPage(profileId));
+                ctx.html(RegisterView.renderAccountCreated(profileId));
             } catch (Exception e) {
-                ctx.html(SmartStudyView.renderError("Account creation failed", e.getMessage()));
+                ctx.html(ErrorView.render("Account creation failed", e.getMessage()));
             }
         });
 
@@ -69,7 +69,30 @@ public class SmartStudyController {
                 return;
             }
 
-            ctx.html(SmartStudyView.renderDashboardPage(model));
+            ctx.html(DashboardView.render(model));
+        });
+
+        app.get("/profile", ctx -> {
+            if (!model.isLoggedIn()) {
+                ctx.redirect("/login");
+                return;
+            }
+
+            ctx.html(ProfileView.render(model));
+        });
+
+        app.post("/profile", ctx -> {
+            try {
+                String name = ctx.formParam("name");
+                String pin = ctx.formParam("pin");
+                int maxDailyStudyMinutes = Integer.parseInt(ctx.formParam("maxDailyStudyMinutes"));
+
+                model.updateProfile(name, pin, maxDailyStudyMinutes);
+
+                ctx.redirect("/profile");
+            } catch (Exception e) {
+                ctx.html(ErrorView.render("Error updating profile", e.getMessage()));
+            }
         });
 
         app.get("/courses", ctx -> {
@@ -78,7 +101,7 @@ public class SmartStudyController {
                 return;
             }
 
-            ctx.html(SmartStudyView.renderCoursesPage(model));
+            ctx.html(CourseView.render(model));
         });
 
         app.post("/courses", ctx -> {
@@ -90,7 +113,19 @@ public class SmartStudyController {
 
                 ctx.redirect("/courses");
             } catch (Exception e) {
-                ctx.html(SmartStudyView.renderError("Error adding course", e.getMessage()));
+                ctx.html(ErrorView.render("Error adding course", e.getMessage()));
+            }
+        });
+
+        app.post("/courses/delete", ctx -> {
+            try {
+                int courseId = Integer.parseInt(ctx.formParam("courseId").trim());
+
+                model.deleteCourse(courseId);
+
+                ctx.redirect("/courses");
+            } catch (Exception e) {
+                ctx.html(ErrorView.render("Error deleting course", e.getMessage()));
             }
         });
 
@@ -100,7 +135,7 @@ public class SmartStudyController {
                 return;
             }
 
-            ctx.html(SmartStudyView.renderAssessmentsPage(model));
+            ctx.html(AssessmentView.render(model));
         });
 
         app.post("/assessments", ctx -> {
@@ -125,7 +160,19 @@ public class SmartStudyController {
 
                 ctx.redirect("/assessments");
             } catch (Exception e) {
-                ctx.html(SmartStudyView.renderError("Error adding assessment", e.getMessage()));
+                ctx.html(ErrorView.render("Error adding assessment", e.getMessage()));
+            }
+        });
+
+        app.post("/assessments/delete", ctx -> {
+            try {
+                int assessmentId = Integer.parseInt(ctx.formParam("assessmentId").trim());
+
+                model.deleteAssessment(assessmentId);
+
+                ctx.redirect("/assessments");
+            } catch (Exception e) {
+                ctx.html(ErrorView.render("Error deleting assessment", e.getMessage()));
             }
         });
 
@@ -135,7 +182,7 @@ public class SmartStudyController {
                 return;
             }
 
-            ctx.html(SmartStudyView.renderAvailabilityPage(model));
+            ctx.html(AvailabilityView.render(model));
         });
 
         app.post("/availability", ctx -> {
@@ -160,7 +207,7 @@ public class SmartStudyController {
 
                 ctx.redirect("/availability");
             } catch (Exception e) {
-                ctx.html(SmartStudyView.renderError("Error updating availability", e.getMessage()));
+                ctx.html(ErrorView.render("Error updating availability", e.getMessage()));
             }
         });
 
